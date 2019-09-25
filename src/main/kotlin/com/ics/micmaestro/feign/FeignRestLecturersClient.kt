@@ -3,19 +3,17 @@ package com.ics.micmaestro.feign
 import feign.Param
 import org.springframework.cloud.openfeign.FeignClient
 import org.springframework.cloud.openfeign.SpringQueryMap
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestMethod
+import org.springframework.web.bind.annotation.*
 
-@FeignClient(name = "lecturers", url= "https://c426a404.ngrok.io")
+@FeignClient(name = "lecturers", url= "http://localhost:1000",configuration = [FeignConfig::class])
 interface FeignRestLecturersClient {
 
+    //Get request to fetch a list of lecturers
     @RequestMapping(method = [RequestMethod.GET], value = ["lecturers"])
     fun getAllLecturers():List<Lecturer>
 
     @RequestMapping(method = [RequestMethod.GET], value = ["students"])
-    fun getStudentById(@SpringQueryMap studentParameter: StudentParameter):Student
+    fun getStudentById(@RequestParam(value = "studentNumber") studentNumber: Int):Student
 
     @RequestMapping(method = [RequestMethod.POST], value=["students"])
     fun createStudent(@RequestBody student:Student):Student
@@ -24,5 +22,5 @@ interface FeignRestLecturersClient {
     fun createAppointment(@RequestBody createAppointment: CreateAppointment):Appointment
 
     @RequestMapping(method = [RequestMethod.PATCH], value = ["appointments/{appointmentId}/"])
-    fun updateAppointment(@PathVariable(value = "appointmentId") appointmentId:Long, @SpringQueryMap studentParameter: StudentId):Appointment
+    fun updateAppointment(@PathVariable(name = "appointmentId") appointmentId:Long, @RequestParam(name = "studentId") studentId: Long):Appointment
 }

@@ -10,8 +10,8 @@ import feign.okhttp.OkHttpClient
 import org.springframework.boot.CommandLineRunner
 import org.springframework.stereotype.Component
 
-@Component
-class TestingFeign(val feignRestClient:FeignRestClient):CommandLineRunner {
+
+class TestingFeign(private val feignRestClient:FeignRestClient):CommandLineRunner {
 
     override fun run(vararg args: String?) {
         val actors = listOf<Actor>()
